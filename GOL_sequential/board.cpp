@@ -13,10 +13,7 @@ void board::read_board_from_file() {
 		return;
 	};
 	std::string line;
-	//getline(infile, line);
 	char b;
-	int temp;
-	//infile >> this->generations >> b >> this->size_x;
 	infile >> this->size_x >> b >> this->size_y;
 
 	this->gol_board = new bool*[this->size_y];
@@ -47,11 +44,9 @@ void board::read_board_from_file() {
 			};
 			if (*it == 'x') {
 				this->gol_board[line_counter-1][column_counter] = true;
-				//cout << "true";
 			}
 			else if (*it == '.') {
 				this->gol_board[line_counter - 1][column_counter] = false;
-				//cout << "false";
 			}
 			else {
 				cout << "unexpected character " << *it << " while reading board" << endl;
@@ -63,7 +58,6 @@ void board::read_board_from_file() {
 		line_counter++;
 	};
 };
-
 void board::print_board_binary() {
 	for (int i = 0;i < this->size_y;i++) {
 		for (int j = 0;j < this->size_x;j++) {
@@ -81,8 +75,6 @@ void board::print_board_like_input() {
 		cout << endl;
 	};
 }
-
-
 void board::read_params_from_cmdline(int argc, char** argv) {
 	vector<string> args(argv + 1, argv + argc);
 	string infname, outfname,generations;
@@ -110,14 +102,12 @@ void board::read_params_from_cmdline(int argc, char** argv) {
 	this->input_file = infname;
 	read_board_from_file();
 };
-
 void board::compute_GOL() {
 	std::cout << "compute" << std::endl;
 	for (int gen = 0; gen < this->generations;gen++) {
 		this->update_board();
 	};
 };
-
 void board::update_board() {
 	for (int row = 0;row < this->size_y;++row) {
 		for (int col = 0;col < this->size_x;++col) {
@@ -139,7 +129,6 @@ void board::update_board() {
 		this->next_gol_board[i] = temp_board[i];
 	};
 };
-
 bool board::update_cell(int row, int col) {
 	//cout << row << "," << col << endl;
 	int dead_counter = 0;
@@ -166,10 +155,8 @@ bool board::update_cell(int row, int col) {
 	if (cell_status && ((live_counter == 2) || (live_counter == 3))) return true;
 	if (cell_status && (live_counter < 2)) return false;
 	if (cell_status && (live_counter > 3)) return false;
-
-
+	else return false;
 };
-
 void board::write_to_file() {
 	std::cout << "write" << std::endl;
 
@@ -187,3 +174,4 @@ void board::write_to_file() {
 		outfile << endl;
 	};
 };
+bool board::get_measure_flag() { return this->measure_flag; };

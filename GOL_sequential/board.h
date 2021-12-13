@@ -22,4 +22,5 @@ public:
 	void write_to_file();
 	void print_board_binary();
 	void print_board_like_input();
+	bool get_measure_flag();
 };
