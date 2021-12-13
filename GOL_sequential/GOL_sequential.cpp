@@ -12,6 +12,7 @@ int main()
     board myboard;
     myboard.read_params_from_cmdline();
     myboard.compute_GOL();
+    myboard.print_board_like_input();
     myboard.write_to_file();
 
 };

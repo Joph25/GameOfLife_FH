@@ -15,8 +15,10 @@ void board::read_board_from_file(const char* board_file) {
 	std::string line;
 	//getline(infile, line);
 	char b;
-	infile >> this->generations >> b >> this->size_x;
-	this->size_y = this->size_x;
+	int temp;
+	//infile >> this->generations >> b >> this->size_x;
+	infile >> this->size_x >> b >> this->size_y;
+
 	this->gol_board = new bool*[this->size_y];
 	for (int i = 0;i < size_y;++i) {
 		this->gol_board[i] = new bool[this->size_x];
@@ -32,9 +34,17 @@ void board::read_board_from_file(const char* board_file) {
 		{
 			line_counter++;
 			continue;
-		}
+		};
+		if (line_counter > this->size_y) {
+			cout << "Row counter out of bounds" << endl;
+			return;
+		};
 		int column_counter = 0;
 		for (auto it = line.cbegin(); it != line.cend(); ++it) {
+			if (column_counter > this->size_x){
+				cout << "Column counter out of bounds" << endl;
+				return;
+			};
 			if (*it == 'x') {
 				this->gol_board[line_counter-1][column_counter] = true;
 				//cout << "true";
@@ -52,7 +62,6 @@ void board::read_board_from_file(const char* board_file) {
 		};
 		line_counter++;
 	};
-	//this->print_board_binary();
 };
 
 void board::print_board_binary() {
@@ -63,11 +72,25 @@ void board::print_board_binary() {
 		cout << endl;
 	};
 }
+void board::print_board_like_input() {
+	for (int i = 0;i < this->size_y;i++) {
+		for (int j = 0;j < this->size_x;j++) {
+			if (this->gol_board[i][j]) cout << "x";
+			else cout << ".";
+		};
+		cout << endl;
+	};
+}
+
 
 void board::read_params_from_cmdline() {
 	const char* testfile = "..\\gol_examples\\random250_in.gol";
-	//const char* testfile = "C:\\Root_Philipp\\FH_AI\Visual_Studio_Projekte\\GameOfLife\\gol_examples\\random250_in.gol";
+	//const char* testfile = "..\\gol_examples\\small_gol.txt";
+	this->output_file = "..\\gol_output.txt";
+	this->generations = 250;
 	read_board_from_file(testfile);
+	this->write_to_file();
+	this->output_file = "..\\gol_output2.txt";
 
 };
 
@@ -98,7 +121,6 @@ void board::update_board() {
 	for (int i = 0;i < this->size_y;++i) {
 		this->next_gol_board[i] = temp_board[i];
 	};
-	
 };
 
 bool board::update_cell(int row, int col) {
@@ -106,12 +128,14 @@ bool board::update_cell(int row, int col) {
 	int dead_counter = 0;
 	int live_counter = 0;
 	bool cell_status = this->gol_board[row][col];
-	for (int y = row - 1; y < row + 1;++y) {
-		for (int x = col - 1; x < col + 1;++x) {
-			if ((x == row) && (y == col)) {
+	for (int y = row - 1; y <= row + 1;++y) {
+		for (int x = col - 1; x <= col + 1;++x) {
+			int corrected_x = (x+this->size_x) % this->size_x;
+			int corrected_y = (y+this->size_y) % this->size_y;
+			if ((x == col) && (y == row)) {
 				continue;
 			}
-			else if (this->gol_board[y % this->size_y][x % this->size_x]) { //if true -> alive
+			else if (this->gol_board[corrected_y][corrected_x]) { //if true -> alive
 				live_counter++;
 			}
 			else {
@@ -119,6 +143,7 @@ bool board::update_cell(int row, int col) {
 			}
 		};
 	};
+	//if ((live_counter + dead_counter) != 8) cout << "Less than 8 cells checked" << endl;
 	//Rules
 	if (!cell_status && (live_counter == 3)) return true;
 	if (cell_status && ((live_counter == 2) || (live_counter == 3))) return true;
@@ -128,7 +153,20 @@ bool board::update_cell(int row, int col) {
 
 };
 
-
 void board::write_to_file() {
 	std::cout << "write" << std::endl;
+
+	ofstream outfile;
+	outfile.open(this->output_file, ios::out);
+	for (int row = 0;row < this->size_y; ++row) {
+		for (int col = 0;col < this->size_x; ++col) {
+			if (this->gol_board[row][col]) {
+				outfile << "x";
+			}
+			else {
+				outfile << ".";
+			};
+		};
+		outfile << endl;
+	};
 };

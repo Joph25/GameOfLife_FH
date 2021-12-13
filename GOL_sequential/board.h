@@ -9,6 +9,8 @@ private:
 	int generations;
 	bool **gol_board;
 	bool **next_gol_board;
+	const char* output_file;
+	char* input_file;
 	void read_board_from_file(const char*);
 	void update_board();
 	bool update_cell(int,int);
@@ -17,4 +19,5 @@ public:
 	void compute_GOL();
 	void write_to_file();
 	void print_board_binary();
+	void print_board_like_input();
 };
