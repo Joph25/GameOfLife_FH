@@ -6,6 +6,7 @@ class board {
 private:
 	int size_x;
 	int size_y;
+	int generations;
 	std::vector<std::vector<bool>> gol_board;
 	void read_board_from_file(const char*);
 public:

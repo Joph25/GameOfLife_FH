@@ -13,7 +13,13 @@ void board::read_board_from_file(const char* board_file) {
 		return;
 	};
 	std::string line;
-	getline(infile, line);
+	//getline(infile, line);
+	int a, c;
+	char b;
+	infile >> this->generations >> b >> this->size_x;
+	this->size_y = this->size_x;
+	//cout << a << b << c<<endl;
+	/*
 	string generations_str,size_str;
 	bool comma_flg = false;
 	for (auto it = line.cbegin(); it != line.cend(); ++it) {
@@ -35,10 +41,10 @@ void board::read_board_from_file(const char* board_file) {
 	cout << size_str << endl;
 	int generations = atoi(generations_str.c_str());
 	cout << generations << endl;
-
+	*/
 	while (getline(infile, line))
 	{
-		//std::cout << line << std::endl;
+		std::cout << line << std::endl;
 	};
 };
 
