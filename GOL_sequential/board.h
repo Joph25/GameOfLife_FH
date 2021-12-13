@@ -7,11 +7,11 @@ private:
 	int size_x;
 	int size_y;
 	int generations;
-	bool *gol_board;
+	bool **gol_board;
 	void read_board_from_file(const char*);
 public:
 	void read_params_from_cmdline();
 	void compute_GOL();
 	void write_to_file();
-
+	void print_board_binary();
 };

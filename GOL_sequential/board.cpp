@@ -17,9 +17,11 @@ void board::read_board_from_file(const char* board_file) {
 	char b;
 	infile >> this->generations >> b >> this->size_x;
 	this->size_y = this->size_x;
-	//cout << a << b << c<<endl;
+	this->gol_board = new bool*[this->size_y];
+	for (int i = 0;i < size_y;++i) {
+		this->gol_board[i] = new bool[this->size_x];
+	};
 	int line_counter = 0;
-	this->gol_board = new bool[this->size_y*this->size_x];
 	while (getline(infile, line))
 	{
 		if (line_counter == 0)
@@ -30,11 +32,11 @@ void board::read_board_from_file(const char* board_file) {
 		int column_counter = 0;
 		for (auto it = line.cbegin(); it != line.cend(); ++it) {
 			if (*it == 'x') {
-				this->gol_board[(line_counter-1)*size_y+column_counter] = true;
+				this->gol_board[line_counter-1][column_counter] = true;
 				//cout << "true";
 			}
 			else if (*it == '.') {
-				this->gol_board[(line_counter-1) * size_y + column_counter] = false;
+				this->gol_board[line_counter - 1][column_counter] = false;
 				//cout << "false";
 			}
 			else {
@@ -46,11 +48,17 @@ void board::read_board_from_file(const char* board_file) {
 		};
 		line_counter++;
 	};
-	for (int i = 0;i < 250;i++) {
-		cout << this->gol_board[i] << endl;
-	};
-	cout << this->gol_board << endl;
+	this->print_board_binary();
 };
+
+void board::print_board_binary() {
+	for (int i = 0;i < this->size_y;i++) {
+		for (int j = 0;j < this->size_x;j++) {
+			cout << this->gol_board[i][j];
+		};
+		cout << endl;
+	};
+}
 
 void board::read_params_from_cmdline() {
 	const char* testfile = "..\\gol_examples\\random250_in.gol";
