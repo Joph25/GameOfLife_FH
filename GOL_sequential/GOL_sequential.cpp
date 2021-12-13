@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "board.h"
+#include <vector>
 
 int main()
 {
