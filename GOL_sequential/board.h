@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+using namespace std;
 
 class board {
 private:
@@ -9,13 +10,14 @@ private:
 	int generations;
 	bool **gol_board;
 	bool **next_gol_board;
-	const char* output_file;
-	char* input_file;
-	void read_board_from_file(const char*);
+	string output_file;
+	string input_file;
+	bool measure_flag;
+	void read_board_from_file();
 	void update_board();
 	bool update_cell(int,int);
 public:
-	void read_params_from_cmdline();
+	void read_params_from_cmdline(int, char**);
 	void compute_GOL();
 	void write_to_file();
 	void print_board_binary();

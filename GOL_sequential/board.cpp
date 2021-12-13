@@ -5,11 +5,11 @@
 #include <string>
 using namespace std;
 
-void board::read_board_from_file(const char* board_file) {
-	std::cout << board_file << std::endl;
-	std::ifstream infile(board_file);
+void board::read_board_from_file() {
+	std::cout << this->input_file << std::endl;
+	std::ifstream infile(this->input_file);
 	if (!infile.is_open()) {
-		cout << "Cant open file " << board_file << endl;
+		cout << "Cant open file " << this->input_file << endl;
 		return;
 	};
 	std::string line;
@@ -83,15 +83,32 @@ void board::print_board_like_input() {
 }
 
 
-void board::read_params_from_cmdline() {
-	const char* testfile = "..\\gol_examples\\random250_in.gol";
-	//const char* testfile = "..\\gol_examples\\small_gol.txt";
-	this->output_file = "..\\gol_output.txt";
-	this->generations = 250;
-	read_board_from_file(testfile);
-	this->write_to_file();
-	this->output_file = "..\\gol_output2.txt";
-
+void board::read_params_from_cmdline(int argc, char** argv) {
+	vector<string> args(argv + 1, argv + argc);
+	string infname, outfname,generations;
+	this->measure_flag = false;
+	int arg_counter = 0;
+	for (auto i = args.begin(); i != args.end(); ++i) {
+		if (*i == "--load") {
+			if ((i + 1) != args.end())infname = *++i;
+		}
+		else if (*i == "--save") {
+			if ((i+1)!= args.end())outfname = *++i;
+			
+		}
+		else if (*i == "--generations") {
+			if ((i + 1) != args.end()) {
+				generations = *++i;
+				this->generations = atoi(generations.c_str());
+			};
+		}
+		else if (*i == "--measure") {
+			this->measure_flag = true;
+		};
+	};
+	this->output_file = outfname;
+	this->input_file = infname;
+	read_board_from_file();
 };
 
 void board::compute_GOL() {

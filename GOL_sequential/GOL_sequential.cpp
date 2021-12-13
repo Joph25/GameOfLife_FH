@@ -5,12 +5,9 @@
 #include "board.h"
 #include <vector>
 
-int main()
-{
-    std::cout << "Hello World!\n";
-    
+int main(int argc, char** argv) { 
     board myboard;
-    myboard.read_params_from_cmdline();
+    myboard.read_params_from_cmdline(argc,argv);
     myboard.compute_GOL();
     myboard.print_board_like_input();
     myboard.write_to_file();
