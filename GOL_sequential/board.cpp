@@ -6,7 +6,7 @@
 using namespace std;
 
 void board::read_board_from_file() {
-	std::cout << this->input_file << std::endl;
+	//std::cout << this->input_file << std::endl;
 	std::ifstream infile(this->input_file);
 	if (!infile.is_open()) {
 		cout << "Cant open file " << this->input_file << endl;
@@ -79,7 +79,6 @@ void board::read_params_from_cmdline(int argc, char** argv) {
 	vector<string> args(argv + 1, argv + argc);
 	string infname, outfname,generations;
 	this->measure_flag = false;
-	int arg_counter = 0;
 	for (auto i = args.begin(); i != args.end(); ++i) {
 		if (*i == "--load") {
 			if ((i + 1) != args.end())infname = *++i;
@@ -103,7 +102,7 @@ void board::read_params_from_cmdline(int argc, char** argv) {
 	read_board_from_file();
 };
 void board::compute_GOL() {
-	std::cout << "compute" << std::endl;
+	//std::cout << "compute" << std::endl;
 	for (int gen = 0; gen < this->generations;gen++) {
 		this->update_board();
 	};
@@ -158,7 +157,7 @@ bool board::update_cell(int row, int col) {
 	else return false;
 };
 void board::write_to_file() {
-	std::cout << "write" << std::endl;
+	//std::cout << "write" << std::endl;
 
 	ofstream outfile;
 	outfile.open(this->output_file, ios::out);
